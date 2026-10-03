@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Play checkers against a friend or the computer.">
+  <title>Checkers</title>
+  <link rel="icon" href="assets/whiteking.jpg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="app">
+    <!-- Login (Form1) -->
+    <section id="screen-login" class="screen screen-bg" data-title="Checkers - Login">
+      <form id="login-form" class="auth-panel" autocomplete="on">
+        <label for="login-username">Enter Username :</label>
+        <input id="login-username" name="username" autocomplete="username" spellcheck="false">
+        <label for="login-password">Enter Password :</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password">
+        <button type="submit" class="btn" style="--btn: #2196f3">LOG IN</button>
+        <span class="auth-or">OR</span>
+        <button type="button" id="btn-goto-signup" class="btn" style="--btn: #009688">SIGN UP</button>
+      </form>
+    </section>
+
+    <!-- Sign up (Form2) -->
+    <section id="screen-signup" class="screen screen-bg" data-title="Checkers - Sign Up" hidden>
+      <form id="signup-form" class="auth-panel" autocomplete="off">
+        <h1 class="auth-title">SIGN UP</h1>
+        <label for="signup-username">Username</label>
+        <input id="signup-username" name="username" autocomplete="username" spellcheck="false" maxlength="50">
+        <label for="signup-fullname">Fullname</label>
+        <input id="signup-fullname" name="fullname" autocomplete="name" maxlength="100">
+        <label for="signup-password">Password</label>
+        <input id="signup-password" name="password" type="password" autocomplete="new-password">
+        <div class="auth-row">
+          <button type="button" id="btn-signup-back" class="btn" style="--btn: #6c757d">Back</button>
+          <button type="submit" class="btn" style="--btn: #2196f3">Enter</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Main menu (Form3) -->
+    <section id="screen-menu" class="screen screen-bg" data-title="Checkers - Main Menu" hidden>
+      <p id="menu-welcome" class="menu-welcome">Welcome to Checkers</p>
+      <nav class="menu-panel" aria-label="Main menu">
+        <button type="button" id="btn-play-2p" class="btn btn-large" style="--btn: #2196f3">2 Players</button>
+        <button type="button" id="btn-play-ai" class="btn btn-large" style="--btn: #4caf50">VS Computer</button>
+        <div class="menu-small">
+          <button type="button" id="btn-leaderboard" class="btn" style="--btn: #ff9800">Leaderboards</button>
+          <button type="button" id="btn-settings" class="btn" style="--btn: #607d8b">Settings</button>
+          <button type="button" id="btn-logout" class="btn" style="--btn: #58585f">Log Out</button>
+        </div>
+      </nav>
+    </section>
+
+    <!-- Game board (GameForm) -->
+    <section id="screen-game" class="screen screen-dark" hidden>
+      <div class="game-layout">
+        <div id="board" class="board" role="group" aria-label="Checkers board"></div>
+        <aside class="game-side">
+          <p id="game-turn" class="game-turn"></p>
+          <p id="game-status" class="game-status"></p>
+          <p id="game-series" class="game-series"></p>
+          <p id="game-captured" class="game-captured"></p>
+          <p id="game-timer" class="game-timer"></p>
+          <ol id="game-moves" class="game-moves" aria-label="Move history"></ol>
+          <div class="game-actions">
+            <button type="button" id="btn-leave" class="btn" style="--btn: #58585f">Main Menu</button>
+            <button type="button" id="btn-resign" class="btn" style="--btn: #f44336">Resign</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Leaderboard (LeaderboardForm) -->
+    <section id="screen-leaderboard" class="screen screen-board" data-title="Checkers - Leaderboard" hidden>
+      <header class="lb-top">
+        <h1 class="lb-title">CHECKERS LEADERBOARD</h1>
+        <p id="lb-info" class="lb-info"></p>
+        <div class="lb-actions">
+          <button type="button" id="btn-lb-refresh" class="btn" style="--btn: #387ecb">Refresh</button>
+          <button type="button" id="btn-lb-close" class="btn" style="--btn: #58585f">Close</button>
+        </div>
+      </header>
+      <div class="lb-scroll">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Username</th>
+              <th scope="col">FullName</th>
+              <th scope="col">EasyWins</th>
+              <th scope="col">NormalWins</th>
+              <th scope="col">HardWins</th>
+              <th scope="col">TotalWins</th>
+              <th scope="col">TotalLosses</th>
+              <th scope="col">WinRate</th>
+              <th scope="col">Best Win vs Computer</th>
+            </tr>
+          </thead>
+          <tbody id="lb-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Settings (SettingsForm) -->
+    <section id="screen-settings" class="screen screen-panel" data-title="Checkers - Settings" hidden>
+      <form id="settings-form" class="settings">
+        <h1 class="settings-title">CHECKERS SETTINGS</h1>
+        <div class="settings-groups">
+          <fieldset>
+            <legend>Audio</legend>
+            <label class="check">
+              <input type="checkbox" id="set-music"> Enable background music
+            </label>
+            <div class="volume">
+              <label for="set-volume">Volume</label>
+              <input type="range" id="set-volume" min="0" max="100" step="1">
+              <output id="set-volume-value" for="set-volume"></output>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Gameplay</legend>
+            <label class="check">
+              <input type="checkbox" id="set-highlight"> Highlight valid moves
+            </label>
+            <label for="set-theme" class="field-label">Board theme</label>
+            <select id="set-theme">
+              <option value="BlackWhite">Black &amp; White</option>
+              <option value="ClassicWood">Classic Wood</option>
+              <option value="Ocean">Ocean</option>
+            </select>
+            <p class="hint">Changes apply to newly opened game screens.</p>
+          </fieldset>
+        </div>
+        <div class="settings-footer">
+          <p id="settings-result" class="settings-result" role="status"></p>
+          <button type="submit" class="btn" style="--btn: #42914b">Save Settings</button>
+          <button type="button" id="btn-settings-close" class="btn" style="--btn: #5a5a60">Close</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Match setup (GameSetupForm) -->
+  <dialog id="setup-dialog" class="dialog setup">
+    <form method="dialog">
+      <h2 class="setup-title">NEW MATCH</h2>
+      <div class="setup-row">
+        <label for="setup-bestof">Best Of</label>
+        <select id="setup-bestof">
+          <option>1</option>
+          <option>3</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="setup-row" id="setup-difficulty-row">
+        <label for="setup-difficulty">Difficulty</label>
+        <select id="setup-difficulty">
+          <option>Easy</option>
+          <option selected>Normal</option>
+          <option>Hard</option>
+        </select>
+      </div>
+      <div class="dialog-actions">
+        <button value="start" class="btn" style="--btn: #2196f3">Start</button>
+        <button value="cancel" formnovalidate class="btn" style="--btn: #607d8b">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Message boxes -->
+  <dialog id="message-dialog" class="dialog message" aria-labelledby="message-title" aria-describedby="message-text">
+    <form method="dialog">
+      <h2 id="message-title" class="message-title"></h2>
+      <p id="message-text" class="message-text"></p>
+      <div id="message-actions" class="dialog-actions"></div>
+    </form>
+  </dialog>
+
+  <audio id="bg-music" src="assets/bgsound.mp3" loop preload="none"></audio>
+
+  <script src="js/engine.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
